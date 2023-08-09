@@ -1,2 +1,4 @@
 /node_modules
+
+# Exclude environment variables
 .env
