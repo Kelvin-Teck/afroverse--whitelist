@@ -38,10 +38,18 @@ app.use(cors());
 
 app.post('/api/add-awaiting-user', async (req, res) => {
 	const {email} = req.body;
+	const foundAwaitingUsers = await awatingUser.findOne({email});
+
 	try{
+
 		if(!email){
 			return res.status(401).json({status: 'error', message: 'please enter an email...'});		
 		}	
+
+		if(foundAwaitingUsers){
+			return res.status(401).json({status: 'error', message: 'this email has already been added to whitelist...'});		
+		}
+
 
 		const newAwaitingUser = await awatingUser({
 			email,
@@ -114,6 +122,6 @@ app.post('/api/add-awaiting-user', async (req, res) => {
 
 app.listen(PORT, async () => {
 	await CONNECT_TO_DB();
-	console.log(`server running on http:localhost:${PORT}`)
+	console.log(`server running on http://localhost:${PORT}`)
 })
 
